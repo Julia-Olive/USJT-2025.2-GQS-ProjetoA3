@@ -99,12 +99,32 @@ class TestBiblioteca(unittest.TestCase):
     def test_nao_adicionar_livro_com_isbn_invalido(self):
         ok = self.bib.adicionar_livro("Livro B", "Autor B", "123", 2024)
         self.assertFalse(ok)
-        self.assertEqual(len(self.bib.livros), 0)
+        self.assertEqual(len(self.bib.livros), 0) 
+
+    def test_nao_adicionar_livro_com_isbn_duplicado(self):
+        ok1 = self.bib.adicionar_livro("Livro A", "Autor A", "1234567890123", 2024)
+        self.assertTrue(ok1)
+
+        ok2 = self.bib.adicionar_livro("Livro B", "Autor B", "1234567890123", 2024)
+        self.assertFalse(ok2)
+
+        self.assertEqual(len(self.bib.livros), 1)
+        self.assertEqual(self.bib.livros[0].titulo, "Livro A")
 
     def test_nao_cadastrar_usuario_com_email_invalido(self):
         ok = self.bib.cadastrar_usuario("Usuário", "emailinvalido", "999")
         self.assertFalse(ok)
-        self.assertEqual(len(self.bib.usuarios), 0)
+        self.assertEqual(len(self.bib.usuarios), 0) 
+
+    def test_nao_cadastrar_usuario_com_email_duplicado(self):
+        ok1 = self.bib.cadastrar_usuario("Usuário A", "user@example.com", "111")
+        self.assertTrue(ok1)
+
+        ok2 = self.bib.cadastrar_usuario("Usuário B", "user@example.com", "222")
+        self.assertFalse(ok2)
+
+        self.assertEqual(len(self.bib.usuarios), 1)
+        self.assertEqual(self.bib.usuarios[0].email, "user@example.com")
 
     def test_nao_permitir_emprestimo_para_usuario_inexistente(self):
         self.bib.adicionar_livro("Livro A", "Autor A", "1234567890123", 2024)
